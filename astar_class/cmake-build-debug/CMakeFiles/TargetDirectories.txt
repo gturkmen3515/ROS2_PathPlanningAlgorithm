@@ -1,0 +1,3 @@
+/home/atakan/Desktop/cpp/astar_class/cmake-build-debug/CMakeFiles/result_plot.dir
+/home/atakan/Desktop/cpp/astar_class/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/atakan/Desktop/cpp/astar_class/cmake-build-debug/CMakeFiles/rebuild_cache.dir

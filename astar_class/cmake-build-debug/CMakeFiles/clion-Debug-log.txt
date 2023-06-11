@@ -1,0 +1,5 @@
+/snap/clion/237/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/237/bin/ninja/linux/x64/ninja -G Ninja -S /home/atakan/Desktop/cpp/astar_class -B /home/atakan/Desktop/cpp/astar_class/cmake-build-debug
+-- Could NOT find Python3 (missing: Intrepreter) (found version "3.8.10")
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/atakan/Desktop/cpp/astar_class/cmake-build-debug

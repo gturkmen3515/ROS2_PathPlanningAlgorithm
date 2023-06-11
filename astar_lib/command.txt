@@ -1,0 +1,1 @@
+g++ main.cpp -o result_plot -I /usr/include/python3.8 -lpython3.8
