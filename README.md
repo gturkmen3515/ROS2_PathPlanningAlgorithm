@@ -63,3 +63,17 @@ Path planning algoritmasının çalışması için aracın konumunu ve çevre bi
 
 Sonuç:
 Bu raporda, path planning algoritmasının nasıl çalıştığına dair bir açıklama sunulmuştur. Algoritmanın temel adımları ve kullanılan veri yapıları anlatılmıştır. Ayrıca, aracın konumu ve çevre bilgilerini almak için kullanılan mesajlar da tanımlanmıştır. Bu bilgiler, path planning algoritmasının bir aracın yolunu planlamak için nasıl kullanıldığını anlamak için faydalıdır.
+
+
+Command:
+Path Plannimnng Tutorial
+1) ros2 launch maze_bot maze_1_robot_camera.launch.py
+2) ros2 run maze_bot bot_mapping_deneme 
+3) ros2 run maze_bot bot_mapping_deneme 
+
+
+Path Following Tutorial
+1) ros2 launch maze_bot maze_1_robot_camera.launch.py
+2) ros2 run maze_bot maze_solver 
+
+
