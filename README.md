@@ -69,9 +69,9 @@ Command:
 Path Plannimnng Tutorial
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py
 2) ros2 run maze_bot bot_mapping_deneme 
-3.1) ros2 run cpp_pubsub astar4    #run astar algortihm without vehicle configuration
-3.2) ros2 run cpp_pubsub astar5    #run astar algortihm with vehicle configuration using Bresenham's line algorithm
-
+3) 3.1 ros2 run cpp_pubsub astar4    #run astar algortihm without vehicle configuration 30 second
+4) 3.2) ros2 run cpp_pubsub astar5    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 20 second
+5) 3.3) ros2 run cpp_pubsub astar6    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 13 second
 
 Path Following Tutorial
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py
