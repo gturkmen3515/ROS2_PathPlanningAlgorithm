@@ -73,19 +73,19 @@ public:
     // Callback function for obsx subscription
     void obsxCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
-        obsx_ = *msg;
+        obsx_ = std::move(*msg);
     }
 
     // Callback function for obsy subscription
     void obsyCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
-        obsy_ = *msg;
+        obsy_ = std::move(*msg);
     }
 
     // Callback function for gridsize subscription
     void gridsizeCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
-        gridsize_ = *msg;
+        gridsize_ = std::move(*msg);
     }
 
     // Function to publish data
@@ -134,7 +134,7 @@ public:
             for (int j = 0; j < COLS; j++)
             {
 
-                grid[i][j] = new Node_s(i, j);
+                grid[i][j] = std::move(new Node_s(i, j));
             }
         }
 
@@ -143,8 +143,8 @@ public:
 
         for (int i = 0; i < std::distance(obsx_val.begin(), obsx_val.end()); i++)
         {
-            int obsx = obsx_.data[i];
-            int obsy = obsy_.data[i];
+            int obsx = std::move(obsx_.data[i]);
+            int obsy = std::move(obsy_.data[i]);
 
             // Mark the cells along the line segment representing the vehicle's dimensions
             for (int dx = -vehicleWidth; dx <= vehicleWidth; dx++) {
@@ -178,7 +178,7 @@ public:
 
             for (Node_s* node : path) {
                 std::cout << "(" << node->x << ", " << node->y << ")" << std::endl;
-                path_array.push_back({node->x, node->y});
+                path_array.push_back(std::move({node->x, node->y}));
             }
 
             // Set the dimensions of the path message
