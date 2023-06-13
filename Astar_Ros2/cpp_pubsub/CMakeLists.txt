@@ -36,14 +36,17 @@ ament_target_dependencies(astar_sub rclcpp std_msgs geometry_msgs)
 add_executable(astar_sub2 src/astar_subscriber2.cpp)
 ament_target_dependencies(astar_sub2 rclcpp std_msgs geometry_msgs)
 
-
-
 add_executable(astar_sub4 src/astar_subscriber4.cpp)
 ament_target_dependencies(astar_sub4 rclcpp std_msgs geometry_msgs)
+
+add_executable(astar_sub5 src/astar_subscriber5.cpp)
+ament_target_dependencies(astar_sub5 rclcpp std_msgs geometry_msgs)
+
  install(TARGETS
   astar_sub
  astar_sub2
  astar_sub4
+  astar_sub5
   DESTINATION lib/${PROJECT_NAME})
 
 target_link_libraries(astar_sub3 ${DEPENDENCIES})
