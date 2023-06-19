@@ -28,18 +28,27 @@ find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(turtlesim REQUIRED)
 find_package(sensor_msgs REQUIRED)
+include_directories(
+        include
+        )
 
 
 
-
-add_executable(main src/main.cpp src/astar.cpp)
+add_library(main src/astar/main.cpp src/astar/astar.cpp)
 ament_target_dependencies(main rclcpp std_msgs geometry_msgs)
+#ament_export_targets(main HAS_LIBRARY_TARGET)
+install(
+        DIRECTORY include/cpp_pubsub
+        DESTINATION include
+)
+
 
  install(TARGETS
-	main
-  DESTINATION lib/${PROJECT_NAME})
+ main
+  DESTINATION lib/${PROJECT_NAME}
+         )
 
-target_link_libraries(astar_sub3 ${DEPENDENCIES})
+#target_link_libraries(  astar_sub3 ${DEPENDENCIES})
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights

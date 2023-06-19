@@ -12,7 +12,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iterator>
-#include "astar.hpp"
+#include "cpp_pubsub/astar.h"
 //#include <queue>
 
 

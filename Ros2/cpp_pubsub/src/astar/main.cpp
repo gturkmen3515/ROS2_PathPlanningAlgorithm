@@ -12,8 +12,7 @@
 #include <vector> // Standard vector container
 #include <cmath> // Math functions
 #include <algorithm> // Algorithms library
-#include "MazeSolver.h"
-
+#include "cpp_pubsub/MazeSolver.h"
 // Global variable to track if the program is interrupted
 bool interrupted = false;
 

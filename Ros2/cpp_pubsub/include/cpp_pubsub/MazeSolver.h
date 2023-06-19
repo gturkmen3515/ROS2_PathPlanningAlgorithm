@@ -11,7 +11,7 @@
 #include <vector> // Standard vector container
 #include <cmath> // Math functions
 #include <algorithm> // Algorithms library
-#include "astar.hpp" // Custom A* algorithm implementation
+#include "cpp_pubsub/astar.h" // Custom A* algorithm implementation
 #include <fstream> // File handling
 // Define operator<< for printing vectors
 template <typename S>
