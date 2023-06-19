@@ -34,9 +34,6 @@ Node* startNode = grid[xs][ys];
 Node* endNode = grid[xe][ye];
 
 
-
-
-
 Yolun Hesaplanması:
 
 Son adımda, A* (A-Star) gibi bir yol bulma algoritması kullanılarak başlangıç ve hedef noktaları arasındaki en kısa yol hesaplanır. Algoritma, ızgara ve başlangıç-hedef noktalarını kullanarak bir yolun vektörünü (path) döndürür.
@@ -69,9 +66,7 @@ Command:
 Path Plannimnng Tutorial
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py
 2) ros2 run maze_bot bot_mapping_deneme 
-3) 3.1 ros2 run cpp_pubsub astar4    #run astar algortihm without vehicle configuration 30 second
-4) 3.2) ros2 run cpp_pubsub astar5    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 20 second
-5) 3.3) ros2 run cpp_pubsub astar6    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 13 second
+3) ros2 run cpp_pubsub  main    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 20 second
 
 Path Following Tutorial
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py

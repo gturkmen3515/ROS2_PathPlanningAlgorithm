@@ -1,4 +1,7 @@
 //
+// Created by atakan on 19.06.2023.
+//
+//
 // Created by atakan on 29.05.2023.
 //
 
@@ -9,8 +12,9 @@
 #include <cmath>
 #include <algorithm>
 #include <iterator>
-
+#include "astar.hpp"
 //#include <queue>
+
 
 class Node_s {
 public:
@@ -25,7 +29,6 @@ public:
         delete parent;
     }
 };
-
 // iki nodes arasındaki euler mesafe
 double distance(Node_s* a, Node_s* b) {
     return (std::sqrt(std::pow(a->x - b->x, 2) + std::pow(a->y - b->y, 2)));

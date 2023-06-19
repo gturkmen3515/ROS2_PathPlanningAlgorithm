@@ -11,8 +11,8 @@
 #include <vector> // Standard vector container
 #include <cmath> // Math functions
 #include <algorithm> // Algorithms library
-#include "astar.h" // Custom A* algorithm implementation
-
+#include "astar.hpp" // Custom A* algorithm implementation
+#include <fstream> // File handling
 // Define operator<< for printing vectors
 template <typename S>
 std::ostream& operator<<(std::ostream& os, const std::vector<S>& vector)
@@ -73,92 +73,170 @@ public:
     // Callback function for obsx subscription
     void obsxCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
-        obsx_ = *msg;
+        obsx_ = std::move(*msg);
     }
 
     // Callback function for obsy subscription
     void obsyCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
-        obsy_ = *msg;
+        obsy_ = std::move(*msg);
     }
 
     // Callback function for gridsize subscription
     void gridsizeCallback(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
-        gridsize_ = *msg;
+        gridsize_ = std::move(*msg);
     }
 
     // Function to publish data
+    bool isCellOnLine(int x1, int y1, int x2, int y2)//obsx,obsy,x,y
+    {
+        const int dx = std::abs(x2 - x1);
+        const int dy = std::abs(y2 - y1);
+        const int sx = (x1 < x2) ? 1 : -1;
+        const int sy = (y1 < y2) ? 1 : -1;
+        int err = dx - dy;
+
+        // Bounding box coordinates
+        const int xmin = std::min(x1, x2);
+        const int xmax = std::max(x1, x2);
+        const int ymin = std::min(y1, y2);
+        const int ymax = std::max(y1, y2);
+
+        // Iterate over cells within the bounding box only
+        for (int x = xmin; x <= xmax; x++)
+        {
+            for (int y = ymin; y <= ymax; y++)
+            {
+                // Check if the cell lies on the line segment
+                if (x == x1 && y == y1)
+                {
+                    return true;  // The cell lies on the line segment
+                }
+
+                int e2 = 2 * err;
+                if (e2 > -dy)
+                {
+                    err -= dy;
+                    x1 += sx;
+                }
+                if (e2 < dx) {
+                    err += dx;
+                    y1 += sy;
+                }
+            }
+        }
+
+        return false;  // No cell on the line segment
+    }
+
+
     void publishData()
     {
         // Create and populate the message
-        auto width = gridsize_.data[0];
-        auto height = gridsize_.data[1];
-        auto startx = gridsize_.data[2];
-        auto starty = gridsize_.data[3];
-        auto endx = gridsize_.data[4];
-        auto endy = gridsize_.data[5];
 
-        auto obsy_val = obsy_.data;
-        auto obsx_val = obsx_.data;
 
-        auto path_msg = std::make_shared<std_msgs::msg::Float64MultiArray>();
-        path_msg->layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
 
-        const int ROWS = height;
-        const int COLS = width;
+        const int ROWS = gridsize_.data[1];
+        const int COLS = gridsize_.data[0];
 
         std::vector<std::vector<Node_s*>> grid(ROWS, std::vector<Node_s*>(COLS));
 
         // Initialize grid and obstacles
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                grid[i][j] = new Node_s(i, j);
+        for (int i = 0; i < ROWS; i++)
+        {
+            for (int j = 0; j < COLS; j++)
+            {
+
+                grid[i][j] = std::move(new Node_s(i, j));
             }
         }
 
-        for (int i = 0; i < std::distance(obsx_val.begin(), obsx_val.end()); i++) {
-            grid[obsx_val[i]][obsy_val[i]]->obstacle =1;
+        const int vehicleWidth = 10;  // Define the width of the vehicle
+        const int vehicleLength = 12; // Define the length of the vehicle
+
+        for (int i = 0; i < obsx_.data.size(); i++)
+        {
+            const int obsx = std::move(obsx_.data[i]);
+            const int obsy = std::move(obsy_.data[i]);
+
+            // Mark the cells along the line segment representing the vehicle's dimensions
+            for (int dx = -vehicleWidth; dx <= vehicleWidth; dx++) {
+                for (int dy = -vehicleLength; dy <= vehicleLength; dy++) {
+                    const int x = obsx + dx;
+                    const  int y = obsy + dy;
+
+                    // Check if the cell lies on the line segment
+                    if (isCellOnLine(obsx, obsy, x, y)) {
+                        if (x >= 0 && x < ROWS && y >= 0 && y < COLS) {
+                            grid[x][y]->obstacle = 1;
+                        }
+                    }
+                }
+            }
         }
 
-        Node_s* startNode = grid[startx][starty];
-        Node_s* endNode = grid[endx][endy];
+        Node_s* startNode = grid[gridsize_.data[2]][gridsize_.data[3]];
+        Node_s* endNode = grid[gridsize_.data[4]][gridsize_.data[5]];
 
         std::vector<Node_s*> path = AStar(startNode, endNode, grid);
-        std::vector<int> x_path;
-        std::vector<int> y_path;
 
-        // Print the found path
-        if (!path.empty()) {
+        // Clear path_msg->data before populating
+        path_msg->data.clear();
+
+        if (!path.empty())
+        {
             std::cout << "Path found:" << std::endl;
-            for (Node_s* node : path) {
+
+            std::vector<std::vector<double>> path_array;
+            path_array.reserve(path.size());
+
+            for (Node_s* node : path)
+            {
                 std::cout << "(" << node->x << ", " << node->y << ")" << std::endl;
-                x_path.push_back(node->x);
-                y_path.push_back(node->y);
+                path_array.push_back(std::move(std::vector<double>{node->x, node->y}));
             }
-        } else {
+
+            // Set the dimensions of the path message
+            path_msg->layout.dim.clear();
+            path_msg->layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
+            path_msg->layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
+            path_msg->layout.dim[0].label = "rows";
+            path_msg->layout.dim[0].size = path_array.size();
+            path_msg->layout.dim[0].stride = path_array.size() * 2;
+            path_msg->layout.dim[1].label = "cols";
+            path_msg->layout.dim[1].size = 2;
+            path_msg->layout.dim[1].stride = 2;
+
+            // Flatten the 2D vector into a 1D array
+            for (const auto& point : path_array)
+            {
+                path_msg->data.insert(path_msg->data.end(), point.begin(), point.end());
+            }
+            std::ofstream outFile("path.txt");
+            if (outFile.is_open())
+            {
+                for (size_t i = 0; i < path_msg->data.size(); i += 2) {
+                    outFile << path_msg->data[i] << "," << path_msg->data[i + 1] << "\n";
+                }
+                outFile.close();
+                std::cout << "Path written to path.txt" << std::endl;
+            }
+            else
+            {
+                std::cout << "Failed to open path.txt for writing" << std::endl;
+            }
+
+        }
+        else
+        {
             std::cout << "Path not found." << std::endl;
-        }
-
-        // Convert the path to double arrays
-        std::vector<double> x_path_d(x_path.begin(), x_path.end());
-        std::vector<double> y_path_d(y_path.begin(), y_path.end());
-        std::vector<std::pair<std::vector<double>, std::vector<double>>> path_vec;
-        path_vec.push_back(std::make_pair(x_path_d, y_path_d));
-
-        std::vector<std::array<double, 2>> path_data;
-        path_data.reserve(x_path_d.size());
-
-        for (std::size_t i = 0; i < x_path_d.size(); ++i) {
-            path_data.push_back({x_path_d[i], y_path_d[i]});
-        }
-
-        for (const auto& point : path_data) {
-            path_msg->data.insert(path_msg->data.end(), point.begin(), point.end());
         }
 
         path_publisher_->publish(*path_msg);
     }
+
+
 
     // Destructor
     ~MazeSolver()
@@ -194,6 +272,7 @@ private:
 
     // Grid of nodes
     std::vector<std::vector<Node_s*, CustomAllocator<Node_s*>>> grid;
+    std::shared_ptr<std_msgs::msg::Float64MultiArray> path_msg = std::make_shared<std_msgs::msg::Float64MultiArray>();
 
 };
 #endif //CPP_PUBSUB_MAZESOLVER_H

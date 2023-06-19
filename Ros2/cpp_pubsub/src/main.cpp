@@ -14,6 +14,15 @@
 #include <algorithm> // Algorithms library
 #include "MazeSolver.h"
 
+// Global variable to track if the program is interrupted
+bool interrupted = false;
+
+// Signal handler function for Ctrl+C
+void signalHandler(int signum)
+{
+    // Set the interrupted flag to true
+    interrupted = true;
+}
 
 // Main function
 int main(int argc, char** argv)
@@ -24,8 +33,14 @@ int main(int argc, char** argv)
     // Create an instance of the MazeSolver class
     auto node = std::make_shared<MazeSolver>();
 
-    // Spin the node, i.e., start processing callbacks
-    rclcpp::spin(node);
+    // Set up the signal handler for Ctrl+C
+    signal(SIGINT, signalHandler);
+
+    // Spin the node until interrupted
+    while (!interrupted && rclcpp::ok())
+    {
+        rclcpp::spin_some(node);
+    }
 
     // Shutdown ROS
     rclcpp::shutdown();
