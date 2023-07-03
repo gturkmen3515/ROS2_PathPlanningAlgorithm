@@ -33,6 +33,8 @@ include_directories(
         )
 
 
+add_executable(astar_opt src/astar/astar_opt.cpp)
+ament_target_dependencies(astar_opt rclcpp std_msgs geometry_msgs)
 
 add_library(main src/astar/main.cpp src/astar/astar.cpp)
 ament_target_dependencies(main rclcpp std_msgs geometry_msgs)
@@ -44,6 +46,7 @@ install(
 
 
  install(TARGETS
+ astar_opt
  main
   DESTINATION lib/${PROJECT_NAME}
          )

@@ -1,0 +1,182 @@
+[0.313s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'cpp_pubsub']
+[0.314s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f71673840d0>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=['cpp_pubsub'], packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=12, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f71673840d0>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f7167384610>)
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.355s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.355s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm'
+[0.355s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.356s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extensions ['ignore', 'ignore_ament_install']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'ignore'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'ignore_ament_install'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extensions ['colcon_pkg']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'colcon_pkg'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extensions ['colcon_meta']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'colcon_meta'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extensions ['ros']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'ros'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extensions ['cmake', 'python']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'cmake'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'python'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extensions ['python_setup_py']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2) by extension 'python_setup_py'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extensions ['ignore', 'ignore_ament_install']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extension 'ignore'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extension 'ignore_ament_install'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extensions ['colcon_pkg']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extension 'colcon_pkg'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extensions ['colcon_meta']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extension 'colcon_meta'
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extensions ['ros']
+[0.372s] Level 1:colcon.colcon_core.package_identification:_identify(Ros2/cpp_pubsub) by extension 'ros'
+[0.375s] DEBUG:colcon.colcon_core.package_identification:Package 'Ros2/cpp_pubsub' with type 'ros.ament_cmake' and name 'cpp_pubsub'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extensions ['ignore', 'ignore_ament_install']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'ignore'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'ignore_ament_install'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extensions ['colcon_pkg']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'colcon_pkg'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extensions ['colcon_meta']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'colcon_meta'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extensions ['ros']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'ros'
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extensions ['cmake', 'python']
+[0.375s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'cmake'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_class) by extension 'python'
+[0.378s] DEBUG:colcon.colcon_core.package_identification:Package 'astar_class' with type 'cmake' and name 'untitled'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extensions ['ignore', 'ignore_ament_install']
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'ignore'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'ignore_ament_install'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extensions ['colcon_pkg']
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'colcon_pkg'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extensions ['colcon_meta']
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'colcon_meta'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extensions ['ros']
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'ros'
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extensions ['cmake', 'python']
+[0.378s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'cmake'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(astar_lib) by extension 'python'
+[0.380s] DEBUG:colcon.colcon_core.package_identification:Package 'astar_lib' with type 'cmake' and name 'untitled5'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.380s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extensions ['ignore', 'ignore_ament_install']
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extension 'ignore'
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extension 'ignore_ament_install'
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extensions ['colcon_pkg']
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extension 'colcon_pkg'
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extensions ['colcon_meta']
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extension 'colcon_meta'
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extensions ['ros']
+[0.381s] Level 1:colcon.colcon_core.package_identification:_identify(maze_bot) by extension 'ros'
+[0.381s] DEBUG:colcon.colcon_core.package_identification:Package 'maze_bot' with type 'ros.ament_python' and name 'maze_bot'
+[0.381s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.382s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.382s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.382s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.382s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.403s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'maze_bot' in 'maze_bot'
+[0.403s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'untitled' in 'astar_class'
+[0.403s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'untitled5' in 'astar_lib'
+[0.404s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.404s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.408s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 24 installed packages in /home/atakan/ros2_ws/install
+[0.409s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 270 installed packages in /opt/ros/foxy
+[0.411s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'cmake_args' from command line to 'None'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'cmake_target' from command line to 'None'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'cmake_clean_cache' from command line to 'False'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'cmake_clean_first' from command line to 'False'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'cmake_force_configure' from command line to 'False'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'ament_cmake_args' from command line to 'None'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'catkin_cmake_args' from command line to 'None'
+[0.486s] Level 5:colcon.colcon_core.verb:set package 'cpp_pubsub' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.486s] DEBUG:colcon.colcon_core.verb:Building package 'cpp_pubsub' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub', 'merge_install': False, 'path': '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/Ros2/cpp_pubsub', 'symlink_install': False, 'test_result_base': None}
+[0.486s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.490s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.490s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/Ros2/cpp_pubsub' with build type 'ament_cmake'
+[0.490s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/Ros2/cpp_pubsub'
+[0.497s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.497s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.497s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.508s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/atakan/ros2_ws/install/maze_bot:/home/atakan/ros2_ws/install/examples_rclpy_minimal_subscriber:/home/atakan/ros2_ws/install/examples_rclpy_minimal_service:/home/atakan/ros2_ws/install/examples_rclpy_minimal_publisher:/home/atakan/ros2_ws/install/examples_rclpy_minimal_client:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_server:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_client:/home/atakan/ros2_ws/install/examples_rclpy_executors:/opt/ros/foxy /usr/bin/cmake /home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/Ros2/cpp_pubsub -DCMAKE_INSTALL_PREFIX=/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub
+[2.858s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/atakan/ros2_ws/install/maze_bot:/home/atakan/ros2_ws/install/examples_rclpy_minimal_subscriber:/home/atakan/ros2_ws/install/examples_rclpy_minimal_service:/home/atakan/ros2_ws/install/examples_rclpy_minimal_publisher:/home/atakan/ros2_ws/install/examples_rclpy_minimal_client:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_server:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_client:/home/atakan/ros2_ws/install/examples_rclpy_executors:/opt/ros/foxy /usr/bin/cmake /home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/Ros2/cpp_pubsub -DCMAKE_INSTALL_PREFIX=/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub
+[2.861s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/atakan/ros2_ws/install/maze_bot:/home/atakan/ros2_ws/install/examples_rclpy_minimal_subscriber:/home/atakan/ros2_ws/install/examples_rclpy_minimal_service:/home/atakan/ros2_ws/install/examples_rclpy_minimal_publisher:/home/atakan/ros2_ws/install/examples_rclpy_minimal_client:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_server:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_client:/home/atakan/ros2_ws/install/examples_rclpy_executors:/opt/ros/foxy /usr/bin/cmake --build /home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub -- -j12 -l12
+[7.068s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/atakan/ros2_ws/install/maze_bot:/home/atakan/ros2_ws/install/examples_rclpy_minimal_subscriber:/home/atakan/ros2_ws/install/examples_rclpy_minimal_service:/home/atakan/ros2_ws/install/examples_rclpy_minimal_publisher:/home/atakan/ros2_ws/install/examples_rclpy_minimal_client:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_server:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_client:/home/atakan/ros2_ws/install/examples_rclpy_executors:/opt/ros/foxy /usr/bin/cmake --build /home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub -- -j12 -l12
+[7.093s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/atakan/ros2_ws/install/maze_bot:/home/atakan/ros2_ws/install/examples_rclpy_minimal_subscriber:/home/atakan/ros2_ws/install/examples_rclpy_minimal_service:/home/atakan/ros2_ws/install/examples_rclpy_minimal_publisher:/home/atakan/ros2_ws/install/examples_rclpy_minimal_client:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_server:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_client:/home/atakan/ros2_ws/install/examples_rclpy_executors:/opt/ros/foxy /usr/bin/cmake --install /home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub
+[7.105s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(cpp_pubsub)
+[7.105s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/atakan/ros2_ws/install/maze_bot:/home/atakan/ros2_ws/install/examples_rclpy_minimal_subscriber:/home/atakan/ros2_ws/install/examples_rclpy_minimal_service:/home/atakan/ros2_ws/install/examples_rclpy_minimal_publisher:/home/atakan/ros2_ws/install/examples_rclpy_minimal_client:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_server:/home/atakan/ros2_ws/install/examples_rclpy_minimal_action_client:/home/atakan/ros2_ws/install/examples_rclpy_executors:/opt/ros/foxy /usr/bin/cmake --install /home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/build/cpp_pubsub
+[7.114s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub' for CMake module files
+[7.114s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub' for CMake config files
+[7.115s] Level 1:colcon.colcon_core.shell:create_environment_hook('cpp_pubsub', 'cmake_prefix_path')
+[7.116s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/hook/cmake_prefix_path.ps1'
+[7.117s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/hook/cmake_prefix_path.dsv'
+[7.117s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/hook/cmake_prefix_path.sh'
+[7.118s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/lib'
+[7.118s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/bin'
+[7.118s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/lib/pkgconfig/cpp_pubsub.pc'
+[7.118s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/lib/python3.8/site-packages'
+[7.119s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/bin'
+[7.120s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.ps1'
+[7.121s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.dsv'
+[7.121s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.sh'
+[7.122s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.bash'
+[7.123s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.zsh'
+[7.124s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/colcon-core/packages/cpp_pubsub)
+[7.145s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(cpp_pubsub)
+[7.147s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub' for CMake module files
+[7.147s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub' for CMake config files
+[7.148s] Level 1:colcon.colcon_core.shell:create_environment_hook('cpp_pubsub', 'cmake_prefix_path')
+[7.149s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/hook/cmake_prefix_path.ps1'
+[7.150s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/hook/cmake_prefix_path.dsv'
+[7.150s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/hook/cmake_prefix_path.sh'
+[7.150s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/lib'
+[7.150s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/bin'
+[7.150s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/lib/pkgconfig/cpp_pubsub.pc'
+[7.151s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/lib/python3.8/site-packages'
+[7.151s] Level 1:colcon.colcon_core.environment:checking '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/bin'
+[7.152s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.ps1'
+[7.153s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.dsv'
+[7.153s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.sh'
+[7.154s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.bash'
+[7.154s] INFO:colcon.colcon_core.shell:Creating package script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/cpp_pubsub/package.zsh'
+[7.154s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/cpp_pubsub/share/colcon-core/packages/cpp_pubsub)
+[7.154s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[7.155s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[7.155s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[7.155s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[7.161s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[7.161s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[7.161s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[7.176s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[7.178s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/local_setup.ps1'
+[7.178s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/_local_setup_util_ps1.py'
+[7.180s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/setup.ps1'
+[7.182s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/local_setup.sh'
+[7.182s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/_local_setup_util_sh.py'
+[7.182s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/setup.sh'
+[7.184s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/local_setup.bash'
+[7.185s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/setup.bash'
+[7.186s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/local_setup.zsh'
+[7.187s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/atakan/Desktop/Github/ROS2_PathPlanningAlgorithm/install/setup.zsh'

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmain.a  CMakeFiles/main.dir/src/astar/main.cpp.o CMakeFiles/main.dir/src/astar/astar.cpp.o
+/usr/bin/ranlib libmain.a
