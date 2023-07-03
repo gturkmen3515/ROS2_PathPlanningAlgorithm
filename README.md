@@ -63,7 +63,7 @@ Bu raporda, path planning algoritmasının nasıl çalıştığına dair bir aç
 
 
 Command:
-Path Plannimnng Tutorial
+Path Planning Tutorial
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py
 2) ros2 run maze_bot bot_mapping_deneme 
 3) ros2 run cpp_pubsub  main    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 20 second
@@ -72,4 +72,8 @@ Path Following Tutorial
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py
 2) ros2 run maze_bot maze_solver 
 
+Path Planning optimized
+1) ros2 launch maze_bot maze_1_robot_camera.launch.py
+2) ros2 run maze_bot bot_mapping_deneme 
+3) ros2 run cpp_pubsub  astar_opt    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 20 second
 
