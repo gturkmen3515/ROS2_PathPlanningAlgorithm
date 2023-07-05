@@ -1,18 +1,15 @@
 //
-// Created by atakan on 08.06.2023.
+// Created by deniz on 05.07.2023.
 //
-//
-// Created by atakan on 08.06.2023.
-//
-
-// Include necessary libraries and headers
 #include "rclcpp/rclcpp.hpp" // ROS C++ API
 #include "std_msgs/msg/float64_multi_array.hpp" // ROS message type
 #include <iostream> // Input/output stream
 #include <vector> // Standard vector container
 #include <cmath> // Math functions
 #include <algorithm> // Algorithms library
-#include "cpp_pubsub/MazeSolver.h"
+#include "MazeSolver_opt.h"
+#include "astar_opt.h"
+
 // Global variable to track if the program is interrupted
 bool interrupted = false;
 
