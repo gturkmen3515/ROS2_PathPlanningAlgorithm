@@ -1,49 +1,58 @@
 //
-// Created by atakan on 08.06.2023.
-//
-//
-// Created by atakan on 08.06.2023.
+// Created by deniz on 05.07.2023.
 //
 
-// Include necessary libraries and headers
-#include "rclcpp/rclcpp.hpp" // ROS C++ API
-#include "std_msgs/msg/float64_multi_array.hpp" // ROS message type
-#include <iostream> // Input/output stream
-#include <vector> // Standard vector container
-#include <cmath> // Math functions
-#include <algorithm> // Algorithms library
-#include "MazeSolver_opt.h"
+#include "astar_opt.h"
 
-// Global variable to track if the program is interrupted
-bool interrupted = false;
+std::vector<Node_s*> AStar(Node_s* startNode, Node_s* endNode, std::vector<std::vector<Node_s*>>& grid) {
+    std::vector<Node_s*> path;
 
-// Signal handler function for Ctrl+C
-void signalHandler(int signum)
-{
-    // Set the interrupted flag to true
-    interrupted = true;
-}
+    std::priority_queue<Node_s*, std::vector<Node_s*>, CompareNodes> openList;
+    std::unordered_set<Node_s*> closedSet;
 
-// Main function
-int main(int argc, char** argv)
-{
-    // Initialize ROS
-    rclcpp::init(argc, argv);
+    startNode->f = 0;
+    openList.push(startNode);
 
-    // Create an instance of the MazeSolver class
-    auto node = std::make_shared<MazeSolver>();
+    while (!openList.empty()) {
+        Node_s* currentNode = openList.top();
+        openList.pop();
+        closedSet.insert(currentNode);
 
-    // Set up the signal handler for Ctrl+C
-    signal(SIGINT, signalHandler);
+        if (currentNode == endNode) {
+            Node_s* current = currentNode;
+            while (current != startNode) {
+                path.push_back(current);
+                current = current->parent;
+            }
+            std::reverse(path.begin(), path.end());
+            return path;
+        }
 
-    // Spin the node until interrupted
-    while (!interrupted && rclcpp::ok())
-    {
-        rclcpp::spin_some(node);
+        int dxValues[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+        int dyValues[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+
+        for (int i = 0; i < 8; i++) {
+            int dx = dxValues[i];
+            int dy = dyValues[i];
+
+            Node_s* neighbor = currentNode->getNeighbor(dx, dy);
+
+            if (!(neighbor == nullptr || neighbor->obstacle || closedSet.count(neighbor) > 0)) {
+                double gScore = currentNode->g + currentNode->squaredDistance(neighbor);
+                double hScore = neighbor->squaredDistance(endNode);
+                double fScore = gScore + hScore;
+
+                if (neighbor->parent == nullptr || fScore < neighbor->f) {
+                    neighbor->parent = currentNode;
+                    neighbor->g = gScore;
+                    neighbor->h = hScore;
+                    neighbor->f = fScore;
+
+                    openList.push(neighbor);
+                }
+            }
+        }
     }
 
-    // Shutdown ROS
-    rclcpp::shutdown();
-
-    return 0;
+    return path;
 }
