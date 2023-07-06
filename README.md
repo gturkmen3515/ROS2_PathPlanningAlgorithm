@@ -114,3 +114,9 @@ Code Configuration space
             }
         }
     }
+
+ isCellOnLine.h kodu, bir hücrenin bir çizgi parçası üzerinde olup olmadığını kontrol eden isCellOnLine adlı bir işlevi tanımlar. Fonksiyon dört parametre alır: x1 ve y1, doğru parçasının başlangıç noktasının koordinatlarıdır aynı zamanda engel kordinatlarıdır ve x2 ve y2, doğru parçasının bitiş noktasının koordinatlarıdır buda engel noktalarının araç boyutu kadar ilerletilmesidir.
+
+İşlev, hücrenin doğru parçası üzerinde olup olmadığını belirlemek için Bresenham'ın çizgi algoritmasını kullanır. Algoritma, hat boyunca başlangıç noktasından bitiş noktasına yinelemeli olarak hareket ederek çalışır ve her hücrenin hattın bir parçası olup olmadığını kontrol eder. Algoritma, çizginin yönüne (sx ve sy değişkenleri) bağlı olarak x ve y koordinatlarını artırır veya azaltır ve bir sonraki hücreyi belirlemek için hata değerini (err) ayarlar.
+
+Kontrol edilen geçerli hücre, doğru parçasının bitiş noktasıyla aynıysa, işlev, hücrenin doğru parçası üzerinde olduğunu belirten doğru değerini döndürür. İşlev, bir eşleşme bulmadan döngüyü tamamlarsa, dolaylı olarak false döndürür.
