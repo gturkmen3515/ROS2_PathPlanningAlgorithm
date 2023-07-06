@@ -83,28 +83,34 @@ _**path_planning_deneme**_
 3) ros2 run path_planning_deneme main    #1 second
 
 MazeSolver.h dosyasında 109 ve 110 satırlarda araçın genişligi ve boyu eklenmiştir.
-const int vehicleWidth = gridsize_.data[6];  
-const int vehicleLength = gridsize_.data[7]; 
+
+`const int vehicleWidth = gridsize_.data[6];  // Define the width of the vehicle
+`
+
+`const int vehicleLength = gridsize_.data[7]; // Define the length of the vehicle
+`
+
 126-145 satırları arasında örnek configuration space algoritması uygulanmıştır.Burda Bresenham's line algorithması uygulanmıştır.Algorithmanın h file isCellOnLine.h dır.
-for (int i = 0; i < obsx_.data.size(); i++)
-{
-int obsx = std::move(obsx_.data[i]);
-int obsy = std::move(obsy_.data[i]);
 
-for (int dx = -vehicleWidth/2; dx <= vehicleWidth/2; dx++) 
-{
-    for (int dy = -vehicleLength/2; dy <= vehicleLength/2; dy++) 
-{
-        int x = obsx + dx;
-        int y = obsy + dy;
+Code Configuration space
 
-if (isCellOnLine(obsx, obsy, x, y)) 
-{
-    if (x >= 0 && x < ROWS && y >= 0 && y < COLS) 
-{
-        grid[x][y]->obstacle = 1;
-}
-}
-}
-}
-}
+    for (int i = 0; i < obsx_.data.size(); i++)
+    {
+        int obsx = std::move(obsx_.data[i]);
+        int obsy = std::move(obsy_.data[i]);
+
+        // Mark the cells along the line segment representing the vehicle's dimensions
+        for (int dx = -vehicleWidth/2; dx <= vehicleWidth/2; dx++) {
+            for (int dy = -vehicleLength/2; dy <= vehicleLength/2; dy++) {
+                int x = obsx + dx;
+                int y = obsy + dy;
+
+                // Check if the cell lies on the line segment
+                if (isCellOnLine(obsx, obsy, x, y)) {
+                    if (x >= 0 && x < ROWS && y >= 0 && y < COLS) {
+                        grid[x][y]->obstacle = 1;
+                    }
+                }
+            }
+        }
+    }
