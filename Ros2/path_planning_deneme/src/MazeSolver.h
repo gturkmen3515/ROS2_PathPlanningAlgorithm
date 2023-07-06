@@ -106,7 +106,9 @@ public:
 
         const int ROWS = gridsize_.data[1];
         const int COLS = gridsize_.data[0];
-
+        const int vehicleWidth = gridsize_.data[6];  // Define the width of the vehicle
+        const int vehicleLength = gridsize_.data[7]; // Define the length of the vehicle
+        
         std::vector<std::vector<Node_s*>> grid(ROWS, std::vector<Node_s*>(COLS));
 
         // Initialize grid and obstacles
@@ -119,8 +121,7 @@ public:
             }
         }
 
-        const int vehicleWidth = gridsize_.data[6];  // Define the width of the vehicle
-        const int vehicleLength = gridsize_.data[7]; // Define the length of the vehicle
+
 
         for (int i = 0; i < obsx_.data.size(); i++)
         {
