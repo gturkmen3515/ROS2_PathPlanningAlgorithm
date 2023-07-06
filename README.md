@@ -75,5 +75,14 @@ Path Following Tutorial
 Path Planning optimized
 1) ros2 launch maze_bot maze_1_robot_camera.launch.py
 2) ros2 run maze_bot bot_mapping_deneme 
-3) ros2 run cpp_pubsub  astar_opt    #run astar algortihm with vehicle configuration using Bresenham's line algorithm 20 second
+3) ros2 run cpp_pubsub  astar_opt    #1 second
 
+_**path_planning_deneme**_
+1) ros2 launch maze_bot maze_1_robot_camera.launch.py
+2) ros2 run maze_bot bot_mapping_deneme
+3) ros2 run path_planning_deneme main    #1 second
+
+MazeSolver.h dosyasında 109 ve 110 satırlarda araçın genişligi ve boyu eklenmiştir.
+const int vehicleWidth = gridsize_.data[6];  
+const int vehicleLength = gridsize_.data[7]; 
+126-145 satırları arasında örnek configuration space algoritması uygulanmıştır.Burda Bresenham's line algorithması uygulanmıştır.Algorithmanın h file isCellOnLine.h dır.
