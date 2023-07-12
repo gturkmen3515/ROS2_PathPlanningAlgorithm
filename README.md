@@ -1,6 +1,22 @@
 # ROS2_PathPlanningAlgorithm
 
-Path Planning Algoritması Raporu
+**Dependencies :**
+
+**ROS Based :**
+
+* sudo apt-get install ros-foxy-joint-state-publisher
+* sudo apt-get install ros-foxy-robot-state-publisher
+* sudo apt-get install ros-foxy-gazebo-plugins
+
+**Python Based :**
+
+* pip install pygame
+* pip install setuptools==58.1.0
+* pip install opencv-contrib-python
+* pip install numpy
+
+
+**Path Planning Algoritması Raporu**
 
 Giriş:
 Path planning (yol planlama) algoritmaları, bir aracın belirli bir hedefe ulaşmak için uygun bir yolun hesaplanmasında kullanılır. Bu raporda, verilen bir ızgara (grid) üzerinde path planning algoritmasının nasıl çalıştığı ve kullanılan veri yapıları açıklanmaktadır. Ayrıca, aracın konumu ve çevre bilgilerini almak için kullanılan mesajların da kısa bir tanımı verilmiştir.
