@@ -45,6 +45,10 @@ target_include_directories(osm_visualizer PUBLIC
 install(TARGETS osm_visualizer
   DESTINATION lib/${PROJECT_NAME})
   
+install(
+  DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -2,10 +2,12 @@
 
 OsmVisualizer::OsmVisualizer() : Node("OsmVisualizer")
 {
-  this->declare_parameter("map_path","/home/atakan/Downloads/a.osm");
+  this->declare_parameter("map_path", "/home/otonom/Downloads/a.osm");
+  this->declare_parameter("enable_inc_path_points", true);
+  this->declare_parameter("interval", 2.0);
   if (!readParameters())
       rclcpp::shutdown();
-      
+  
   publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("/hd_map", 10);
   array_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("/array", 10);
   max_min_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("/max_min_values", 10);
@@ -27,7 +29,17 @@ bool OsmVisualizer::readParameters()
 {
     if (!this->get_parameter("map_path", map_path_))
     {
-        std::cout << "Failed to read parameter map_path" << std::endl;
+        std::cout << "Failed to read parameter 'map_path' " << std::endl;
+        return false;
+    }
+    if (!this->get_parameter("enable_inc_path_points", enable_inc_path_points_))
+    {
+        std::cout << "Failed to read parameter 'interval' to increase the path points" << std::endl;
+        return false;
+    }
+    if (!this->get_parameter("interval", interval_))
+    {
+        std::cout << "Failed to read parameter 'interval' to increase the path points" << std::endl;
         return false;
     }
     return true;
@@ -41,11 +53,6 @@ void OsmVisualizer::timer_callback()
       publisher_->publish(m_marker_array);
       array_publisher_->publish(m_array);
     }
-}
-
-void OsmVisualizer::fill_min_max_values(const lanelet::Lanelet &ll)
-{
-
 }
 
 void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
@@ -74,23 +81,18 @@ void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
   {
     for(size_t i = 0; i<ll.centerline2d().size()-1; i++)
     {
-      if(getDistance(ll,i)>5 )
+      if(getDistance(ll,i)>5 && enable_inc_path_points_)
       {
         double dist = getDistance(ll,i);
-        double interval = 5;
+        double interval = 2;
         int num_points = dist / interval;
+
         for(int k = 0 ; k<num_points;k++)
         {
-          m_array.data.push_back(((ll.centerline2d()[i].x()-ll.centerline2d()[i+1].x())*k)/(num_points-1)+ll.centerline2d()[i].x());
-          m_array.data.push_back(((ll.centerline2d()[i].y()-ll.centerline2d()[i+1].y())*k)/(num_points-1)+ll.centerline2d()[i].y());
+          m_array.data.push_back(((ll.centerline2d()[i+1].x()-ll.centerline2d()[i].x()) / num_points) * k + ll.centerline2d()[i].x());
+          m_array.data.push_back(((ll.centerline2d()[i+1].y()-ll.centerline2d()[i].y()) / num_points) * k + ll.centerline2d()[i].y());
         }
 
-        // //if (abs(ll.centerline2d()[i].x()-ll.centerline2d()[i+1].x())>1 && abs(ll.centerline2d()[i].y()-ll.centerline2d()[i+1].y())<1){
-        // x_array=linspace(ll.centerline2d()[i].x(),ll.centerline2d()[i+1].x(),num_points);
-        // y_array=linspace(ll.centerline2d()[i].y(),ll.centerline2d()[i+1].y(),num_points);
-        // //}
-      // m_array.data.push_back(x_array);
-      // m_array.data.push_back(y_array);
       }
       else
       {
@@ -101,16 +103,6 @@ void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
   }
 }
 
-
-// std::vector<double> OsmVisualizer::linspace(double start, double end,int num_points) {
-//     std::vector<double> result;
-//     double step = (end - start) / (num_points - 1);
-//     for (int i = 0; i < num_points; ++i) {
-//         result.push_back(start + i * step);
-//     }
-
-//     return result;
-// }
 
 void OsmVisualizer::writeToFile(const std_msgs::msg::Float64MultiArray& multi_array)
 {
