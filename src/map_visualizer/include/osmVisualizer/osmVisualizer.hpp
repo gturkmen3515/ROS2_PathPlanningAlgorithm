@@ -30,6 +30,7 @@ class OsmVisualizer : public rclcpp::Node
     void fill_array(lanelet::LaneletMapPtr &t_map);
     void fill_array_with_left_right(lanelet::LaneletMapPtr &t_map);
     void fill_min_max_values(const lanelet::Lanelet &li);
+    double getDistance(const lanelet::ConstLanelet &ll , size_t i);
     rclcpp::TimerBase::SharedPtr timer_;
     rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr publisher_;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr array_publisher_;
