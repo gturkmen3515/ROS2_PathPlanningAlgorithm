@@ -37,6 +37,9 @@ class OsmVisualizer : public rclcpp::Node
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr max_min_publisher_;
     std_msgs::msg::Float64MultiArray m_array;
     visualization_msgs::msg::MarkerArray m_marker_array;
-    std::string map_path_; 
 
+    //params
+    std::string map_path_; 
+    bool enable_inc_path_points_;
+    double interval_;
 };
