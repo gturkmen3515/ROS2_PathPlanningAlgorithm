@@ -21,7 +21,7 @@ OsmVisualizer::OsmVisualizer() : Node("OsmVisualizer")
   }
 
   fill_marker(map);
-  fill_array(map);
+  fill_array_with_left_right(map);
   writeToFile(m_array);
 }
 
@@ -48,7 +48,7 @@ bool OsmVisualizer::readParameters()
 void OsmVisualizer::timer_callback()
 {
   // publisher_->get_subscription_count() > 0 && m_marker_array.markers.size() > 0
-  if( publisher_->get_subscription_count() > 0)
+  // if( publisher_->get_subscription_count() > 0)
     {
       publisher_->publish(m_marker_array);
       array_publisher_->publish(m_array);
@@ -57,16 +57,6 @@ void OsmVisualizer::timer_callback()
 
 void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
 {
-  // std::vector<std::vector<double>> path_array;
-
-  int j{0};
-  for (const auto &ll : t_map->laneletLayer)
-  {
-    for(size_t i = 0; i<ll.centerline2d().size(); i++)
-    {
-      j++;
-    }
-  }
   m_array.layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
   m_array.layout.dim[0].label = "rows";
   m_array.layout.dim[0].size = 100000;
@@ -81,7 +71,7 @@ void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
   {
     for(size_t i = 0; i<ll.centerline2d().size()-1; i++)
     {
-      if(getDistance(ll,i)>5 && enable_inc_path_points_)
+      if(getDistance(ll,i) > 5 && enable_inc_path_points_)
       {
         double dist = getDistance(ll,i);
         double interval = 2;
@@ -92,7 +82,6 @@ void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
           m_array.data.push_back(((ll.centerline2d()[i+1].x()-ll.centerline2d()[i].x()) / num_points) * k + ll.centerline2d()[i].x());
           m_array.data.push_back(((ll.centerline2d()[i+1].y()-ll.centerline2d()[i].y()) / num_points) * k + ll.centerline2d()[i].y());
         }
-
       }
       else
       {
@@ -121,33 +110,33 @@ void OsmVisualizer::writeToFile(const std_msgs::msg::Float64MultiArray& multi_ar
   }
 }
 
-// void OsmVisualizer::fill_array_with_left_right(lanelet::LaneletMapPtr &t_map)
-// {
-//   m_array.layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
-//   m_array.layout.dim[0].label = "rows";
-//   m_array.layout.dim[0].size = t_map->laneletLayer.size();
-//   m_array.layout.dim[0].stride = t_map->laneletLayer.size()*4;
-//   m_array.layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
-//   m_array.layout.dim[1].label = "cols";
-//   m_array.layout.dim[1].size = 4;
-//   m_array.layout.dim[1].stride = 4;
+void OsmVisualizer::fill_array_with_left_right(lanelet::LaneletMapPtr &t_map)
+{
+  m_array.layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
+  m_array.layout.dim[0].label = "rows";
+  m_array.layout.dim[0].size = t_map->laneletLayer.size();
+  m_array.layout.dim[0].stride = t_map->laneletLayer.size()*4;
+  m_array.layout.dim.push_back(std_msgs::msg::MultiArrayDimension());
+  m_array.layout.dim[1].label = "cols";
+  m_array.layout.dim[1].size = 4;
+  m_array.layout.dim[1].stride = 4;
 
-//   for (const auto &ll : t_map->laneletLayer)
-//   {
-//     std::vector<lanelet::ConstLineString3d> bounds;
-//     bounds.push_back(ll.leftBound());
-//     bounds.push_back(ll.rightBound());
+  for (const auto &ll : t_map->laneletLayer)
+  {
+    std::vector<lanelet::ConstLineString3d> bounds;
+    bounds.push_back(ll.leftBound());
+    bounds.push_back(ll.rightBound());
 
-//     size_t size = (bounds[0].size() < bounds[1].size()) ? bounds[0].size() : bounds[1].size();
-//     for(size_t i = 0; i<size; i++)
-//     {
-//       m_array.data.push_back(bounds[0][i].x());
-//       m_array.data.push_back(bounds[0][i].y());
-//       m_array.data.push_back(bounds[1][i].x());
-//       m_array.data.push_back(bounds[1][i].y());
-//     }
-//   }
-// }
+    size_t size = (bounds[0].size() < bounds[1].size()) ? bounds[0].size() : bounds[1].size();
+    for(size_t i = 0; i<size; i++)
+    {
+      m_array.data.push_back(bounds[0][i].x());
+      m_array.data.push_back(bounds[0][i].y());
+      m_array.data.push_back(bounds[1][i].x());
+      m_array.data.push_back(bounds[1][i].y());
+    }
+  }
+}
 
 
 double OsmVisualizer::getDistance(const lanelet::ConstLanelet &ll , size_t i) 

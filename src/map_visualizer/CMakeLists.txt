@@ -45,10 +45,29 @@ target_include_directories(osm_visualizer PUBLIC
 install(TARGETS osm_visualizer
   DESTINATION lib/${PROJECT_NAME})
   
+
+
+### occupancy grid
+find_package(nav_msgs REQUIRED)
+
+
+include_directories(include())
+
+add_executable(occupancy_pub src/occupancyGrid/occupancyGrip2.cpp)
+ament_target_dependencies(occupancy_pub rclcpp nav_msgs)
+
+target_include_directories(occupancy_pub PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
+install(TARGETS occupancy_pub
+  DESTINATION lib/${PROJECT_NAME})
+
 install(
   DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
+  
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
