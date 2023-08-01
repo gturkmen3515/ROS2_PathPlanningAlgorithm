@@ -71,10 +71,10 @@ void OsmVisualizer::fill_array(lanelet::LaneletMapPtr &t_map)
   {
     for(size_t i = 0; i<ll.centerline2d().size()-1; i++)
     {
-      if(getDistance(ll,i) > 5 && enable_inc_path_points_)
+      if(getDistance(ll,i) > 2 && enable_inc_path_points_)
       {
         double dist = getDistance(ll,i);
-        double interval = 2;
+        double interval = 1;
         int num_points = dist / interval;
 
         for(int k = 0 ; k<num_points;k++)

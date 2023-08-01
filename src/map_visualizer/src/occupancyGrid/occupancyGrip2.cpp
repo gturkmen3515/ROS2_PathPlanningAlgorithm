@@ -5,6 +5,7 @@
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/pose_with_covariance.hpp"
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
+#include "../include/osmVisualizer/dilation.h"
 
 class OccupancyGridPublisher : public rclcpp::Node {
 public:
@@ -22,8 +23,10 @@ public:
 private:
     void publishOccupancyGrid() 
     {
-        if(first_ && !array_data_right_y.empty() && flag1 && flag2)
+        if((first_ && !array_data_right_y.empty()&& flag1  && flag2) || prev_count_ != count_)
         {
+
+            std::cout << "count:" << count_ << std::endl;
 
             std::vector<int32_t>int_vector_left_x = std::vector<int32_t>(array_data_left_x.begin(),array_data_left_x.end());
             std::vector<int32_t>int_vector_left_y = std::vector<int32_t>(array_data_left_y.begin(),array_data_left_y.end());
@@ -54,38 +57,21 @@ private:
                 
 
                 double dist = getDistance(int_vector_left_x[i],int_vector_right_x[i],int_vector_left_y[i],int_vector_right_y[i]);
-                double interval = 1;
+                double interval = 0.1;
                 int num_points = round(dist / interval);
+                auto x2 = int_vector_right_x[i];
+                auto x1 = int_vector_left_x[i];
+                auto y2 = int_vector_right_y[i];
+                auto y1 = int_vector_left_y[i];
 
                 for(int k = 0 ; k<num_points;k++)
                 {
-                    std::cout << "x:     " << (((int_vector_right_x[i] - int_vector_left_x[i]) / num_points) * k + int_vector_left_x[i]) - min_x << std::endl;
-                    std::cout << "y:     " << (((int_vector_right_y[i] - int_vector_left_y[i]) / num_points) * k + int_vector_left_y[i]) - min_y << std::endl;
-                    int_vector_x.push_back(round(((int_vector_right_x[i] - int_vector_left_x[i]) / num_points) * k + int_vector_left_x[i]));
-                    int_vector_y.push_back(round(((int_vector_right_y[i] - int_vector_left_y[i]) / num_points) * k + int_vector_left_y[i]));
+                    double t = static_cast<double>(k) / (num_points - 1);
+                    double x = x1 + t * (x2 - x1);
+                    double y = y1 + t * (y2 - y1);
+                    int_vector_x.push_back(static_cast<int32_t>(round(x)));
+                    int_vector_y.push_back(static_cast<int32_t>(round(y)));
                 }
-
-
-                // int min_y_for_fill = int_vector_left_y[i]<int_vector_right_y[i]?int_vector_left_y[i]:int_vector_right_y[i];
-                // int x = abs(int_vector_left_x[i]-int_vector_right_x[i]);
-                // int y = abs(int_vector_left_y[i]-int_vector_right_y[i]);
-                // bool inc_x_points = x > y ? true : false;
-                // if(inc_x_points)
-                // {
-                //     for(int j = 0 ; j<x ; j++)
-                //     {
-                //         .push_back(min_x_for_fill + j);
-                //         .push_back(min_y_for_fill);
-                //     }
-                // }
-                // else
-                // {
-                //     for(int j = 0 ; j<y ; j++)
-                //     {
-                //         int_vector_x.push_back(min_x_for_fill);
-                //         int_vector_y.push_back(min_y_for_fill + j);
-                //     }
-                // }
             }
 
             occupancy_grid_msg.header.frame_id = "map";  // Doldurmak istediğiniz frame_id'yi belirtin.
@@ -97,22 +83,25 @@ private:
             occupancy_grid_msg.info.resolution = 1.0; 
             occupancy_grid_msg.data = createMatrixWithMod( int_vector_x , int_vector_y , width , height , min_x , min_y);
             first_ = false;
-
             double x_i = init_msg_.pose.pose.position.x - min_x;
             double y_i = init_msg_.pose.pose.position.y - min_y;
             double x_e = goal_msg_.pose.position.x - min_x;
             double y_e = goal_msg_.pose.position.y - min_y;
             grid_msg_.data = {static_cast<double>(width) , static_cast<double>(height),x_i,y_i,x_e,y_e,static_cast<double>(min_x),static_cast<double>(min_y)};
+
+            prev_count_ = count_;
         }
-        occupancy_grid_publisher_->publish(occupancy_grid_msg);
         obsx_publisher_->publish(x_msg_);
         obsy_publisher_->publish(y_msg_);
         grid_size_publisher->publish(grid_msg_);
+        occupancy_grid_publisher_->publish(occupancy_grid_msg);
+
     }
 
     void goalCallback(const geometry_msgs::msg::PoseStamped::SharedPtr t_goal_msg) {
         goal_msg_ = *t_goal_msg;
         flag2=true;
+        count_ ++;
     }
 
         void initialCallback(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr t_init_msg) {
@@ -135,12 +124,13 @@ private:
             first = false;
         }
     }
-
+    
 
     std::vector<int8_t> createMatrixWithMod(std::vector<int32_t>& int_vector_x, std::vector<int32_t>& int_vector_y, int& rows, int& columns, int& min_x, int& min_y) 
     {
         std::cout << int_vector_y.size()<< std::endl;
         std::vector<int8_t> matrix_data(rows * columns, 100);
+        std::vector<std::vector<int>> dil_matrix(rows, std::vector<int>(columns, 0));
         for (size_t i = 0; i < int_vector_x.size(); ++i) 
         {
             int32_t x = int_vector_x[i] - min_x;
@@ -151,6 +141,7 @@ private:
             }
         }
 
+
         for( int i = 0 ; i < columns ; i++ )
         {
             for( int j = 0 ; j < rows ; j++ )
@@ -160,10 +151,33 @@ private:
                     x_msg_.data.push_back(j);
                     y_msg_.data.push_back(i);
                 }
+                else
+                {                    
+                    dil_matrix[j][i]=1;
+                }
             }
         }
+        //std::cout<<"dil matrix start: "<<std::endl;
+        dil_matrix=applyDilation(dil_matrix);
+        //std::cout<<"dil matrix end: "<<std::endl;
 
-        return matrix_data;
+        std::vector<int8_t> dil ;
+        for( int i = 0 ; i < columns ; i++ )
+        {
+            for( int j = 0 ; j < rows ; j++ )
+            {
+                if (dil_matrix[j][i] == 1)
+                {
+                    dil.push_back(0);
+                    //std::cout<<"dil matrix: "<<dil_matrix[i][j]<<std::endl;
+                }
+                else
+                {
+                    dil.push_back(100);
+                }
+            }
+        }
+        return dil;
     }
     
     double getDistance(int &x1,int &x2,int &y1,int &y2)
@@ -187,6 +201,8 @@ private:
     geometry_msgs::msg::PoseWithCovarianceStamped init_msg_;
     bool flag1 =false;
     bool flag2 =false;
+    int count_{0};
+    int prev_count_{0};
 
 
     rclcpp::TimerBase::SharedPtr timer_;
