@@ -2,6 +2,9 @@
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <std_msgs/msg/int8_multi_array.hpp>
 #include <std_msgs/msg/float64_multi_array.hpp>
+#include "geometry_msgs/msg/pose_stamped.hpp"
+#include "geometry_msgs/msg/pose_with_covariance.hpp"
+#include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
 
 class OccupancyGridPublisher : public rclcpp::Node {
 public:
@@ -11,13 +14,15 @@ public:
         obsx_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("obsx",10);
         obsy_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("obsy",10);
         grid_size_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("gridsize",10);
+        goal_subscriber_ = this->create_subscription<geometry_msgs::msg::PoseStamped>("/goal_pose", 10, std::bind(&OccupancyGridPublisher::goalCallback, this, std::placeholders::_1));
+        initial_subscriber_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>("/initialpose", 10, std::bind(&OccupancyGridPublisher::initialCallback, this, std::placeholders::_1));
         timer_ = this->create_wall_timer(std::chrono::milliseconds(100),std::bind(&OccupancyGridPublisher::publishOccupancyGrid, this));
     }
 
 private:
     void publishOccupancyGrid() 
     {
-        if(first_ && !array_data_right_y.empty())
+        if(first_ && !array_data_right_y.empty() && flag1 && flag2)
         {
 
             std::vector<int32_t>int_vector_left_x = std::vector<int32_t>(array_data_left_x.begin(),array_data_left_x.end());
@@ -46,27 +51,41 @@ private:
             std::vector<int32_t> int_vector_y;
             for(size_t i = 0 ; i<int_vector_left_x.size() ; i++)
             {
-                int min_x_for_fill = int_vector_left_x[i]<int_vector_right_x[i]?int_vector_left_x[i]:int_vector_right_x[i];
-                int min_y_for_fill = int_vector_left_y[i]<int_vector_right_y[i]?int_vector_left_y[i]:int_vector_right_y[i];
-                int x = abs(int_vector_left_x[i]-int_vector_right_x[i]);
-                int y = abs(int_vector_left_y[i]-int_vector_right_y[i]);
-                bool inc_x_points = x > y ? true : false;
-                if(inc_x_points)
+                
+
+                double dist = getDistance(int_vector_left_x[i],int_vector_right_x[i],int_vector_left_y[i],int_vector_right_y[i]);
+                double interval = 1;
+                int num_points = round(dist / interval);
+
+                for(int k = 0 ; k<num_points;k++)
                 {
-                    for(int j = 0 ; j<x ; j++)
-                    {
-                        int_vector_x.push_back(min_x_for_fill + j);
-                        int_vector_y.push_back(min_y_for_fill);
-                    }
+                    std::cout << "x:     " << (((int_vector_right_x[i] - int_vector_left_x[i]) / num_points) * k + int_vector_left_x[i]) - min_x << std::endl;
+                    std::cout << "y:     " << (((int_vector_right_y[i] - int_vector_left_y[i]) / num_points) * k + int_vector_left_y[i]) - min_y << std::endl;
+                    int_vector_x.push_back(round(((int_vector_right_x[i] - int_vector_left_x[i]) / num_points) * k + int_vector_left_x[i]));
+                    int_vector_y.push_back(round(((int_vector_right_y[i] - int_vector_left_y[i]) / num_points) * k + int_vector_left_y[i]));
                 }
-                else
-                {
-                    for(int j = 0 ; j<y ; j++)
-                    {
-                        int_vector_x.push_back(min_x_for_fill);
-                        int_vector_y.push_back(min_y_for_fill + j);
-                    }
-                }
+
+
+                // int min_y_for_fill = int_vector_left_y[i]<int_vector_right_y[i]?int_vector_left_y[i]:int_vector_right_y[i];
+                // int x = abs(int_vector_left_x[i]-int_vector_right_x[i]);
+                // int y = abs(int_vector_left_y[i]-int_vector_right_y[i]);
+                // bool inc_x_points = x > y ? true : false;
+                // if(inc_x_points)
+                // {
+                //     for(int j = 0 ; j<x ; j++)
+                //     {
+                //         .push_back(min_x_for_fill + j);
+                //         .push_back(min_y_for_fill);
+                //     }
+                // }
+                // else
+                // {
+                //     for(int j = 0 ; j<y ; j++)
+                //     {
+                //         int_vector_x.push_back(min_x_for_fill);
+                //         int_vector_y.push_back(min_y_for_fill + j);
+                //     }
+                // }
             }
 
             occupancy_grid_msg.header.frame_id = "map";  // Doldurmak istediğiniz frame_id'yi belirtin.
@@ -79,12 +98,27 @@ private:
             occupancy_grid_msg.data = createMatrixWithMod( int_vector_x , int_vector_y , width , height , min_x , min_y);
             first_ = false;
 
-            grid_msg_.data = {static_cast<double>(width) , static_cast<double>(height),static_cast<double>(min_x),static_cast<double>(min_y)};
+            double x_i = init_msg_.pose.pose.position.x - min_x;
+            double y_i = init_msg_.pose.pose.position.y - min_y;
+            double x_e = goal_msg_.pose.position.x - min_x;
+            double y_e = goal_msg_.pose.position.y - min_y;
+            grid_msg_.data = {static_cast<double>(width) , static_cast<double>(height),x_i,y_i,x_e,y_e,static_cast<double>(min_x),static_cast<double>(min_y)};
         }
         occupancy_grid_publisher_->publish(occupancy_grid_msg);
         obsx_publisher_->publish(x_msg_);
         obsy_publisher_->publish(y_msg_);
         grid_size_publisher->publish(grid_msg_);
+    }
+
+    void goalCallback(const geometry_msgs::msg::PoseStamped::SharedPtr t_goal_msg) {
+        goal_msg_ = *t_goal_msg;
+        flag2=true;
+    }
+
+        void initialCallback(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr t_init_msg) {
+        init_msg_ = *t_init_msg;
+        flag1=true;
+
     }
 
     void float64MultiArrayCallback(const std_msgs::msg::Float64MultiArray::SharedPtr t_msg)
@@ -131,15 +165,30 @@ private:
 
         return matrix_data;
     }
+    
+    double getDistance(int &x1,int &x2,int &y1,int &y2)
+    {
+        return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1 - y2, 2));
+    }
+
 
     rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr occupancy_grid_publisher_;
     rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr osm_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr goal_subscriber_;
+    rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr initial_subscriber_;
+
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr obsx_publisher_;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr obsy_publisher_;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr grid_size_publisher;
     std_msgs::msg::Float64MultiArray x_msg_;
     std_msgs::msg::Float64MultiArray y_msg_;
     std_msgs::msg::Float64MultiArray grid_msg_;
+    geometry_msgs::msg::PoseStamped goal_msg_;
+    geometry_msgs::msg::PoseWithCovarianceStamped init_msg_;
+    bool flag1 =false;
+    bool flag2 =false;
+
+
     rclcpp::TimerBase::SharedPtr timer_;
     nav_msgs::msg::OccupancyGrid occupancy_grid_msg;
     std::vector<double> array_data_left_x;
