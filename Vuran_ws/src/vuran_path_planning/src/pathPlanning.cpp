@@ -106,14 +106,36 @@ void PathPlanning::publishData()
     // std::ofstream obsFile("obstacle_conf.txt");
     //if (obsFile.is_open())
     //{
-    for (int i = 0; i < obsx_.data.size(); i++)
-    {
-        int obsx = std::move(obsx_.data[i]);
-        int obsy = std::move(obsy_.data[i]);
-        grid[obsx][obsy]->obstacle = 1;
+    // for (int i = 0; i < obsx_.data.size(); i++)
+    // {
+    //     int obsx = std::move(obsx_.data[i]);
+    //     int obsy = std::move(obsy_.data[i]);
+    //     grid[obsx][obsy]->obstacle = 1;
 
-    }
+    // }
 
+        for (int i = 0; i < obsx_.data.size(); i++)
+        {
+            int obsx = std::move(obsx_.data[i]);
+            int obsy = std::move(obsy_.data[i]);
+
+            // Mark the cells along the line segment representing the vehicle's dimensions
+            for (int dx = -vehicleLength/2; dx <= vehicleLength/2; dx++) {
+                for (int dy = -vehicleWidth/2; dy <= vehicleWidth/2; dy++) {
+                    int x = obsx + dx;
+                    int y = obsy + dy;
+
+                    // Check if the cell lies on the line segment
+                    if (isCellOnLine(obsx, obsy, x, y)) {
+                        if (x >= 0 && x < ROWS && y >= 0 && y < COLS) {
+                            grid[x][y]->obstacle = 1;
+                            //obsFile << x  << "," << y << "\n";
+
+                        }
+                    }
+                }
+            }
+        }
     //}
     //obsFile.close();
     //std::cout << "Obstacle written to obstacle.txt" << std::endl;
