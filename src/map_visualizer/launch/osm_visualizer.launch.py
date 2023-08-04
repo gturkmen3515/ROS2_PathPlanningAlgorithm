@@ -10,9 +10,7 @@ def generate_launch_description():
             output="screen",
             emulate_tty=True,
             parameters=[
-                {"map_path": "/home/otonom/Downloads/a.osm"},
-                {'enable_inc_path_points', 'True'},
-                {"interval", "2.0"}
+                {"map_path": "/home/otonom/Downloads/a.osm"}
             ]
         )
     ])
