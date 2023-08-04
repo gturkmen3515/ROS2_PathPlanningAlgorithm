@@ -10,7 +10,6 @@ OsmVisualizer::OsmVisualizer() : Node("OsmVisualizer")
   
   publisher_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("/hd_map", 10);
   array_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("/array", 10);
-  max_min_publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("/max_min_values", 10);
   timer_ = this->create_wall_timer( 500ms, std::bind(&OsmVisualizer::timer_callback, this));
 
   lanelet::LaneletMapPtr map = lanelet::load(map_path_, lanelet::projection::UtmProjector(lanelet::Origin({15, 30})));
@@ -22,7 +21,7 @@ OsmVisualizer::OsmVisualizer() : Node("OsmVisualizer")
 
   fill_marker(map);
   fill_array_with_left_right(map);
-  writeToFile(m_array);
+  // writeToFile(m_array);
 }
 
 bool OsmVisualizer::readParameters()
@@ -148,38 +147,34 @@ void OsmVisualizer::fill_marker(lanelet::LaneletMapPtr &t_map)
 {
   size_t i =  0;
 
-  for (const auto &ll : t_map->laneletLayer)
+  // for lanelets
+  std::vector<lanelet::ConstLineString3d> bounds;
+  bounds.push_back(ll.leftBound());
+  bounds.push_back(ll.rightBound());
+
+  for (const auto &bound : bounds)
   {
-    // for lanelets
-    std::vector<lanelet::ConstLineString3d> bounds;
-    bounds.push_back(ll.leftBound());
-    bounds.push_back(ll.rightBound());
-
-    for (const auto &bound : bounds)
+    visualization_msgs::msg::Marker marker;
+    marker.header.frame_id = "map";
+    marker.header.stamp = rclcpp::Clock{}.now();
+    marker.ns = "lanelet";
+    marker.id = i;
+    i++;
+    marker.type = visualization_msgs::msg::Marker::LINE_STRIP;
+    marker.action = visualization_msgs::msg::Marker::ADD;
+    marker.scale.x = 0.1;
+    marker.color.a = 1.0;
+    marker.color.r = 232;
+    marker.color.g = 44;
+    marker.color.b = 44;
+    for (const auto &point : bound)
     {
-
-      visualization_msgs::msg::Marker marker;
-      marker.header.frame_id = "map";
-      marker.header.stamp = rclcpp::Clock{}.now();
-      marker.ns = "lanelet";
-      marker.id = i;
-      i++;
-      marker.type = visualization_msgs::msg::Marker::LINE_STRIP;
-      marker.action = visualization_msgs::msg::Marker::ADD;
-      marker.scale.x = 0.1;
-      marker.color.a = 1.0;
-      marker.color.r = 232;
-      marker.color.g = 44;
-      marker.color.b = 44;
-      for (const auto &point : bound)
-      {
-          geometry_msgs::msg::Point p;
-          p.x = point.x();
-          p.y = point.y();
-          p.z = 0;
-          marker.points.push_back(p);
-      }
-      m_marker_array.markers.push_back(marker);
+        geometry_msgs::msg::Point p;
+        p.x = point.x();
+        p.y = point.y();
+        p.z = 0;
+        marker.points.push_back(p);
     }
+    m_marker_array.markers.push_back(marker);
   }
 }
