@@ -53,7 +53,7 @@ find_package(nav_msgs REQUIRED)
 
 include_directories(include())
 
-add_executable(occupancy_pub src/occupancyGrid/occupancyGrip2.cpp)
+add_executable(occupancy_pub src/occupancyGrid/occupancyGrid.cpp)
 ament_target_dependencies(occupancy_pub rclcpp nav_msgs)
 
 target_include_directories(occupancy_pub PUBLIC

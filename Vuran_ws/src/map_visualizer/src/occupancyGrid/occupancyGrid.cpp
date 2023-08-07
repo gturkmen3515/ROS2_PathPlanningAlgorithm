@@ -27,54 +27,36 @@ private:
     {
         if((first_ && !array_data_right_y.empty()  && flag2) || prev_count_ != count_)
         {
-
-            std::cout << "count:" << count_ << std::endl;
-
-            std::vector<int32_t>int_vector_left_x = std::vector<int32_t>(array_data_left_x.begin(),array_data_left_x.end());
-            std::vector<int32_t>int_vector_left_y = std::vector<int32_t>(array_data_left_y.begin(),array_data_left_y.end());
-            std::vector<int32_t>int_vector_right_x = std::vector<int32_t>(array_data_right_x.begin(),array_data_right_x.end());
-            std::vector<int32_t>int_vector_right_y = std::vector<int32_t>(array_data_right_y.begin(),array_data_right_y.end());
-
-            int min_left_x=*min_element(int_vector_left_x.begin(), int_vector_left_x.end());
-            int min_left_y=*min_element(int_vector_left_y.begin(), int_vector_left_y.end());
-            int max_left_x=*max_element(int_vector_left_x.begin(), int_vector_left_x.end());
-            int max_left_y=*max_element(int_vector_left_y.begin(), int_vector_left_y.end());
-            int min_right_x=*min_element(int_vector_right_x.begin(), int_vector_right_x.end());
-            int min_right_y=*min_element(int_vector_right_y.begin(), int_vector_right_y.end());
-            int max_right_x=*max_element(int_vector_right_x.begin(), int_vector_right_x.end());
-            int max_right_y=*max_element(int_vector_right_y.begin(), int_vector_right_y.end());
-
-            int min_x = min_left_x < min_right_x ? min_left_x : min_right_x;
-            int max_x = max_left_x > max_right_x ? max_left_x : max_right_x;
-            int min_y = min_left_y < min_right_y ? min_left_y : min_right_y;
-            int max_y = max_left_y > max_right_y ? max_left_y : max_right_y;
+            int min_x = std::min(*min_element(array_data_left_x.begin(), array_data_left_x.end()),
+                                *min_element(array_data_right_x.begin(), array_data_right_x.end()));
+            int max_x = std::max(*max_element(array_data_left_x.begin(), array_data_left_x.end()),
+                                *max_element(array_data_right_x.begin(), array_data_right_x.end()));
+            int min_y = std::min(*min_element(array_data_left_y.begin(), array_data_left_y.end()),
+                                *min_element(array_data_right_y.begin(), array_data_right_y.end()));
+            int max_y = std::max(*max_element(array_data_left_y.begin(), array_data_left_y.end()),
+                                *max_element(array_data_right_y.begin(), array_data_right_y.end()));
 
             int width = max_x - min_x; // max_x - min_x
             int height = max_y - min_y; // max_y - min_y
 
             std::vector<int32_t> int_vector_x;
             std::vector<int32_t> int_vector_y;
-            for(size_t i = 0 ; i<int_vector_left_x.size() ; i++)
+            for (size_t i = 0; i < array_data_left_x.size(); ++i) 
             {
-                
-
-                double dist = getDistance(int_vector_left_x[i],int_vector_right_x[i],int_vector_left_y[i],int_vector_right_y[i]);
+                // Calculate dist, interval, and num_points
+                double dist = getDistance(array_data_left_x[i], array_data_right_x[i], array_data_left_y[i], array_data_right_y[i]);
                 double interval = 0.1;
                 int num_points = round(dist / interval);
-                auto x2 = int_vector_right_x[i];
-                auto x1 = int_vector_left_x[i];
-                auto y2 = int_vector_right_y[i];
-                auto y1 = int_vector_left_y[i];
+                int x2 = array_data_right_x[i];
+                int x1 = array_data_left_x[i];
+                int y2 = array_data_right_y[i];
+                int y1 = array_data_left_y[i];
 
-                for(int k = 0 ; k<num_points;k++)
-                {
-                    double t = static_cast<double>(k) / (num_points - 1);
-                    double x = x1 + t * (x2 - x1);
-                    double y = y1 + t * (y2 - y1);
-                    int_vector_x.push_back(static_cast<int32_t>(round(x)));
-                    int_vector_y.push_back(static_cast<int32_t>(round(y)));
-                }
+                auto interpolated_points = linearInterpolation(x1, y1, x2, y2, num_points); // first x , second y
+                int_vector_x.insert(int_vector_x.end(), interpolated_points.first.begin(), interpolated_points.first.end());
+                int_vector_y.insert(int_vector_y.end(), interpolated_points.second.begin(), interpolated_points.second.end());
             }
+
 
             occupancy_grid_msg.header.frame_id = "map";  // Doldurmak istediğiniz frame_id'yi belirtin.
             occupancy_grid_msg.info.width = width;
@@ -131,7 +113,6 @@ private:
         }
     }
     
-
     std::vector<int8_t> createMatrixWithMod(std::vector<int32_t>& int_vector_x, std::vector<int32_t>& int_vector_y, int& rows, int& columns, int& min_x, int& min_y) 
     {
         std::cout << int_vector_y.size()<< std::endl;
@@ -146,7 +127,6 @@ private:
                 matrix_data[(y * rows) + x] = 0;
             }
         }
-
 
         for( int i = 0 ; i < columns ; i++ )
         {
@@ -163,9 +143,7 @@ private:
                 }
             }
         }
-        //std::cout<<"dil matrix start: "<<std::endl;
         dil_matrix=applyDilation(dil_matrix);
-        //std::cout<<"dil matrix end: "<<std::endl;
 
         std::vector<int8_t> dil ;
         for( int i = 0 ; i < columns ; i++ )
@@ -175,7 +153,6 @@ private:
                 if (dil_matrix[j][i] == 1)
                 {
                     dil.push_back(0);
-                    //std::cout<<"dil matrix: "<<dil_matrix[i][j]<<std::endl;
                 }
                 else
                 {
@@ -189,6 +166,27 @@ private:
     double getDistance(int &x1,int &x2,int &y1,int &y2)
     {
         return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1 - y2, 2));
+    }
+
+    double getDistance(const int x1, const int x2, const int y1, const int y2) 
+    {
+        return std::sqrt(std::pow(x1-x2, 2) + std::pow(y1 - y2, 2));
+    }
+
+    std::pair<std::vector<int32_t>, std::vector<int32_t>> linearInterpolation(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int num_points) 
+    {
+        std::vector<int32_t> int_vector_x;
+        std::vector<int32_t> int_vector_y;
+
+        for (int k = 0; k < num_points; ++k) {
+            double t = static_cast<double>(k) / (num_points - 1);
+            int32_t x = static_cast<int32_t>(round(x1 + t * (x2 - x1)));
+            int32_t y = static_cast<int32_t>(round(y1 + t * (y2 - y1)));
+            int_vector_x.push_back(x);
+            int_vector_y.push_back(y);
+        }
+
+        return std::make_pair(int_vector_x, int_vector_y);
     }
 
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscriber_;
