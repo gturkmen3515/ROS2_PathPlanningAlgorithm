@@ -6,6 +6,8 @@
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/pose_with_covariance.hpp"
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/utils.h>
 #include "../include/osmVisualizer/dilation.h"
 
 class OccupancyGridPublisher : public rclcpp::Node {
@@ -57,7 +59,6 @@ private:
                 int_vector_y.insert(int_vector_y.end(), interpolated_points.second.begin(), interpolated_points.second.end());
             }
 
-
             occupancy_grid_msg.header.frame_id = "map";  // Doldurmak istediğiniz frame_id'yi belirtin.
             occupancy_grid_msg.info.width = width;
             occupancy_grid_msg.info.height = height;
@@ -65,14 +66,19 @@ private:
             occupancy_grid_msg.info.origin.position.y = min_y;
             occupancy_grid_msg.info.origin.position.z = 0.0;
             occupancy_grid_msg.info.resolution = 1.0; 
+
             occupancy_grid_msg.data = createMatrixWithMod( int_vector_x , int_vector_y , width , height , min_x , min_y);
             first_ = false;
             double x_i = vehicle_odom_->pose.pose.position.x - min_x;
             double y_i = vehicle_odom_->pose.pose.position.y - min_y;
+            std::pair<double, double> closest_angle_ind_init = findClosestAngle(vehicle_odom_->pose.pose);
+            std::pair<double, double> closest_angle_ind_goal = findClosestAngle(goal_msg_.pose);
+
             double x_e = goal_msg_.pose.position.x - min_x;
             double y_e = goal_msg_.pose.position.y - min_y;
-            grid_msg_.data = {static_cast<double>(width) , static_cast<double>(height),x_i,y_i,x_e,y_e,static_cast<double>(min_x),static_cast<double>(min_y)};
 
+            grid_msg_.data = { static_cast<double>(width), static_cast<double>(height), x_i, y_i, x_e, y_e, static_cast<double>(min_x), static_cast<double>(min_y), closest_angle_ind_init.second, closest_angle_ind_goal.second};
+            
             prev_count_ = count_;
         }
         obsx_publisher_->publish(x_msg_);
@@ -189,6 +195,31 @@ private:
         return std::make_pair(int_vector_x, int_vector_y);
     }
 
+    std::pair<double, double> findClosestAngle(const geometry_msgs::msg::Pose &t_target_pose) 
+    {
+        tf2::Quaternion quaternion =  tf2::Quaternion(t_target_pose.orientation.x,
+                                                      t_target_pose.orientation.y,
+                                                      t_target_pose.orientation.z,
+                                                      t_target_pose.orientation.w);
+
+        tf2::getEulerYPR(quaternion, yaw_, pitch_, roll_);
+        
+        double min_distance = std::numeric_limits<double>::max();
+        double closest_angle = 0;
+        double closest_index = 0;
+
+        for (size_t i = 0; i < angles_.size(); ++i) {
+            double distance = std::abs(yaw_ - angles_[i]);
+            if (distance < min_distance) 
+            {
+                min_distance = distance;
+                closest_angle = angles_[i];
+                closest_index = i;
+            }
+        }
+        return std::make_pair(closest_angle, closest_index);
+    }
+
     rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr odom_subscriber_;
     rclcpp::Publisher<nav_msgs::msg::OccupancyGrid>::SharedPtr occupancy_grid_publisher_;
     rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr osm_sub_; 
@@ -218,6 +249,12 @@ private:
     std::vector<double> array_data_right_y;
     bool first_{true};
     bool first{true};
+
+    double roll_;
+    double pitch_;
+    double yaw_;
+    std::vector<std::vector<double>> coordinates_ = { {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0},{-1, -1}, {0, -1}, {1, -1}};
+    std::vector<double> angles_ = { 0, M_PI/4, M_PI/2, 3*M_PI/4, M_PI, -3*M_PI/4, -M_PI/2, -M_PI/4};
 };
 
 int main(int argc, char **argv) {
