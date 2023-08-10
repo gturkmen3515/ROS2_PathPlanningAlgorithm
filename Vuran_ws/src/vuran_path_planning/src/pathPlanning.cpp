@@ -88,8 +88,8 @@ void PathPlanning::publishData()
 
     const int ROWS = gridsize_.data[0];
     const int COLS = gridsize_.data[1];
-    const int vehicleWidth = 2;  // Define the width of the vehicle
-    const int vehicleLength = 2; // Define the length of the vehicle
+    const int vehicleWidth = 3;  // Define the width of the vehicle
+    const int vehicleLength = 3; // Define the length of the vehicle
 
     std::vector<std::vector<Node_s*>> grid(ROWS, std::vector<Node_s*>(COLS));
 
@@ -99,7 +99,7 @@ void PathPlanning::publishData()
         for (int j = 0; j < COLS; j++)
         {
 
-            grid[i][j] = std::move(new Node_s(i, j,grid));
+            grid[i][j] = std::move(new Node_s(i, j,grid,0,0));
         }
     }
 
@@ -141,8 +141,10 @@ void PathPlanning::publishData()
     //std::cout << "Obstacle written to obstacle.txt" << std::endl;
     Node_s* startNode = grid[gridsize_.data[2]][gridsize_.data[3]];
     Node_s* endNode = grid[gridsize_.data[4]][gridsize_.data[5]];
+    int car_index=gridsize_.data[8];
+    int goal_index=gridsize_.data[9];
 
-    std::vector<Node_s*> path = AStar(startNode, endNode, grid);
+    std::vector<Node_s*> path = AStar(startNode, endNode, grid,car_index,goal_index);
     // Clear path_msg->data before populating
     path_msg->data.clear();
 
@@ -161,9 +163,9 @@ void PathPlanning::publishData()
         {
             if (counter % 2 == 0)
             {
-            std::cout << "(" << node->x << ", " << node->y << ")" << std::endl;
+            //std::cout << "(" << node->x << ", " << node->y << ")" << std::endl;
             path_array.push_back(std::move(std::vector<double>{node->x, node->y}));
-            }
+           }
 
             counter++;
         }
@@ -179,7 +181,7 @@ void PathPlanning::publishData()
         path_msg->layout.dim[1].size = 2;
         path_msg->layout.dim[1].stride = 2;
 
-        int resolution = 100;  // Number of interpolated points between each pair of original points
+        int resolution = 50;  // Number of interpolated points between each pair of original points
 
         BSpline bSpline(path_array);
         std::vector<std::vector<double>> smoothedPath = bSpline.getSmoothPath(resolution);
@@ -190,7 +192,8 @@ void PathPlanning::publishData()
         geometry_msgs::msg::PoseStamped pose_stamped_msg;
         pose_stamped_msg.header.frame_id="map";
         pose_stamped_msg.header.stamp = rclcpp::Clock{}.now();
-        std::cout << smoothedPath.size()<<std::endl;
+        //std::cout << smoothedPath.size()<<std::endl;
+        //for (const auto& point : path_array)
         for (const auto& point : smoothedPath)
         {
             path_msg->data.insert(path_msg->data.end(), point.begin(), point.end());
@@ -204,12 +207,12 @@ void PathPlanning::publishData()
             pose_stamped_msg.pose.position.x = point[0]+gridsize_.data[6];
             pose_stamped_msg.pose.position.y = point[1]+gridsize_.data[7];
             pose_stamped_msg.pose.position.z = 0.0;
-            std::cout<<"X pos:"<<point[0]+gridsize_.data[6]<<"Y pos:" << point[1]+gridsize_.data[7]<< std::endl;
+            //std::cout<<"X pos:"<<point[0]+gridsize_.data[6]<<"Y pos:" << point[1]+gridsize_.data[7]<< std::endl;
 
             smothed_path_msg.poses.push_back(pose_stamped_msg);
 
         }
-            std::cout<<"-----------------------------------------" << std::endl;
+            //std::cout<<"-----------------------------------------" << std::endl;
 
         // std::ofstream outFile("path_smooth.txt");
         // if (outFile.is_open())
@@ -232,7 +235,7 @@ void PathPlanning::publishData()
     }
 
 
-    std::cout << "smothed_path_msg.size     " << smothed_path_msg.poses.size() << std::endl;
+    //std::cout << "smothed_path_msg.size     " << smothed_path_msg.poses.size() << std::endl;
     smooth_path_publisher_->publish(smothed_path_msg);
 }
 }

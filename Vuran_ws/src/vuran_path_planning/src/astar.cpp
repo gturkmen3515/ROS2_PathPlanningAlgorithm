@@ -1,7 +1,7 @@
 
 #include "../include/vuran_path_planning/astar.h"
 
-std::vector<Node_s*> AStar(Node_s* startNode, Node_s* endNode, std::vector<std::vector<Node_s*>>& grid) {
+std::vector<Node_s*> AStar(Node_s* startNode, Node_s* endNode, std::vector<std::vector<Node_s*>>& grid,int car_index,int goal_index) {
     std::vector<Node_s*> path;
 
     std::priority_queue<Node_s*, std::vector<Node_s*>, CompareNodes> openList;

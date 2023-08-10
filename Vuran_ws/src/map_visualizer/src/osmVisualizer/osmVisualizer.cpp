@@ -2,7 +2,7 @@
 
 OsmVisualizer::OsmVisualizer() : Node("OsmVisualizer")
 {
-  this->declare_parameter("map_path", "/home/atakan/Downloads/Town10.osm");
+  this->declare_parameter("map_path", "src/map_visualizer/osm/Town10.osm");
   this->declare_parameter("enable_inc_path_points", true);
   this->declare_parameter("interval", 2.0);
   if (!readParameters())

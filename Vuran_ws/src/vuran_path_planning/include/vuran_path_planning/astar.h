@@ -17,9 +17,10 @@ public:
     double g, h, f;
     bool obstacle;
     Node_s* parent;
+
     std::vector<std::vector<Node_s*>>& grid;
 
-    Node_s(int x, int y, std::vector<std::vector<Node_s*>>& grid)
+    Node_s(int x, int y, std::vector<std::vector<Node_s*>>& grid,int car_index,int goal_index)
             : x(x), y(y), g(0), h(0), f(0), obstacle(false), parent(nullptr), grid(grid) {
     }
 
@@ -44,10 +45,10 @@ public:
 class CompareNodes {
 public:
     bool operator()(const Node_s* a, const Node_s* b) const {
-        return a->f > b->f;
+        return a->g > b->g;
     }
 };
 
-std::vector<Node_s*> AStar(Node_s* startNode, Node_s* endNode, std::vector<std::vector<Node_s*>>& grid);
+std::vector<Node_s*> AStar(Node_s* startNode, Node_s* endNode, std::vector<std::vector<Node_s*>>& grid,int car_index,int goal_index);
 
 #endif //SRC_ASTAR_H
